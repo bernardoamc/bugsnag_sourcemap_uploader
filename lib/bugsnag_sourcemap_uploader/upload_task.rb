@@ -24,12 +24,12 @@ module BugsnagSourcemapUploader
 
       payload = http_options.merge(body: body_payload)
 
-      Response.new(
+      Result.new(
         asset_metadata,
         HttpParty.post(UPLOAD_URL, payload)
       )
     rescue StandardError => e
-      ExecutionError.new(asset_metadata, e)
+      ExecutionErrorResult.new(asset_metadata, e)
     end
 
     private
@@ -42,8 +42,8 @@ module BugsnagSourcemapUploader
       File.open(@asset_metadata.script_path)
     end
 
-    # Represents the response of the UploadTask#upload method.
-    class Response
+    # Represents the result of the UploadTask#upload method.
+    class Result
       HTTP_TIMEOUT_CODE = 408 # HTTP status code for timeouts
       HTTP_TOO_MANY_REQUESTS_CODE = 429 # HTTP status code for too many requests
 
@@ -81,8 +81,8 @@ module BugsnagSourcemapUploader
       end
     end
 
-    # Represents the response of the UploadTask#upload method when an exception occurred.
-    class ExecutionError
+    # Represents the result of the UploadTask#upload method when an exception occurred.
+    class ExecutionErrorResult
       attr_reader :asset_metadata, :exception
 
       def initialize(asset_metadata, exception)

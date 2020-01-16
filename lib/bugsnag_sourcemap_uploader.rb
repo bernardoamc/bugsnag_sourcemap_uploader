@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bugsnag_sourcemap_uploader/version'
+require 'bugsnag_sourcemap_uploader/upload_task'
 require 'concurrent'
 
 module BugsnagSourcemapUploader
@@ -26,7 +27,10 @@ module BugsnagSourcemapUploader
 
     futures = assets_metadata.map do |asset_metadata|
       Concurrent::Future.execute(executor: pool) do
-        UploadTask.new(asset_metadata, bugsnag_api_key).upload
+        UploadTask.new(
+          asset_metadata: asset_metadata,
+          bugsnag_api_key: bugsnag_api_key
+        ).upload(http_options)
       end
     end
 
@@ -39,15 +43,17 @@ module BugsnagSourcemapUploader
 
   # Represents the result of the BugsnagSourcemapUploader.upload operation
   class Result
-    def initialize(task_responses)
-      @task_responses = task_responses
+    attr_reader :tasks_results
+
+    def initialize(tasks_results)
+      @tasks_results = tasks_results
     end
 
     # Answers whether every upload task was successful or not.
     #
     # @return [Boolean] value.
     def success?
-      @success ||= @task_responses.all?(&:success?)
+      @success ||= @tasks_results.all?(&:success?)
     end
 
     # Answers whether we had failures among upload tasks.
@@ -57,19 +63,26 @@ module BugsnagSourcemapUploader
       !success?
     end
 
-    # Filters upload tasks that failed. This includes HTTP failures
+    # Filters upload tasks that were successful.
+    #
+    # @return [Array] The list of tasks that were succesful.
+    def successful_tasks
+      @successful_tasks ||= @tasks_results.select(&:success?)
+    end
+
+    # Filters upload tasks that failed with HTTP errors. This includes HTTP failures
     # or execution errors.
     #
     # @return [Array] The list of tasks that failed.
     def failed_tasks
-      @failed_tasks ||= @task_responses.select(&:failure?)
+      @failed_tasks ||= @tasks_results.select(&:failure?)
     end
 
     # Filters upload tasks that had execution errors.
     #
     # @return [Array] The list of tasks with execution errors.
-    def execution_errors_tasks
-      @execution_errors_tasks ||= failed_tasks.select(&:execution_error?)
+    def execution_error_tasks
+      @execution_error_tasks ||= failed_tasks.select(&:execution_error?)
     end
   end
 end
