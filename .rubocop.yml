@@ -1,0 +1,16 @@
+Layout/LineLength:
+  Max: 120
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+  - http
+  - https
+  IgnoredPatterns:
+  - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+

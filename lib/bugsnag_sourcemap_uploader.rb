@@ -4,6 +4,8 @@ require 'bugsnag_sourcemap_uploader/version'
 require 'bugsnag_sourcemap_uploader/upload_task'
 require 'concurrent'
 
+##
+# BugsnagSourcemapUploader is a library to enable parallel sourcemap uploads to Bugsnag.
 module BugsnagSourcemapUploader
   TASK_TIMEOUT_IN_SECONDS = 10 # Task timeout in seconds
 
@@ -41,6 +43,7 @@ module BugsnagSourcemapUploader
     Result.new(responses)
   end
 
+  ##
   # Represents the result of the BugsnagSourcemapUploader.upload operation
   class Result
     attr_reader :tasks_results
