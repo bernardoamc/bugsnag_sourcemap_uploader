@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['bernardo.amc@gmail.com']
 
   spec.summary       = 'Upload sourcemaps to Bugsnag in parallel.'
-  spec.homepage      = 'https://rubygems.org/gems/bugsnag_sourcemap_uploader'
+  spec.homepage      = 'https://github.com/bernardoamc/bugsnag_sourcemap_uploader'
   spec.license       = 'MIT'
 
   # Specify which files should be added to the gem when it is released.
