@@ -28,7 +28,7 @@ module BugsnagSourcemapUploader
     )
 
     futures = assets_metadata.map do |asset_metadata|
-      Concurrent::Future.execute(executor: pool) do
+      Concurrent::Promise.execute(executor: pool) do
         UploadTask.new(
           asset_metadata: asset_metadata,
           bugsnag_api_key: bugsnag_api_key
