@@ -32,7 +32,7 @@ module BugsnagSourcemapUploader
         UploadTask.new(
           asset_metadata: asset_metadata,
           bugsnag_api_key: bugsnag_api_key
-        ).upload(http_options)
+        ).run(http_options)
       end
     end
 

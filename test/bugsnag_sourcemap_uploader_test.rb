@@ -2,12 +2,9 @@
 
 require 'test_helper'
 require 'bugsnag_sourcemap_uploader/upload_task'
+require 'mocks'
 
 class BugsnagSourcemapUploaderTest < Minitest::Test
-  AssetMetadataMock = Struct.new(:script_path, :source_map_path, :cdn_url)
-  HttpResponseMock = Struct.new(:body, :code, :success?)
-  ExecutionExceptionMock = Class.new(StandardError)
-
   def setup
     @assets_metadata = [
       AssetMetadataMock.new('/script/alert.min.js', '/sourcemap/alert.js.map', 'https://cdn.com/alert.min.js'),
@@ -20,7 +17,7 @@ class BugsnagSourcemapUploaderTest < Minitest::Test
   def test_upload_executes_an_upload_task_per_asset_metadata
     BugsnagSourcemapUploader::UploadTask
       .any_instance
-      .expects(:upload)
+      .expects(:run)
       .times(2)
 
     BugsnagSourcemapUploader.upload(assets_metadata: @assets_metadata, bugsnag_api_key: @api_key)
@@ -34,7 +31,7 @@ class BugsnagSourcemapUploaderTest < Minitest::Test
 
     BugsnagSourcemapUploader::UploadTask
       .any_instance
-      .expects(:upload)
+      .expects(:run)
       .returns(successful_result)
       .times(2)
 
@@ -51,7 +48,7 @@ class BugsnagSourcemapUploaderTest < Minitest::Test
 
     BugsnagSourcemapUploader::UploadTask
       .any_instance
-      .expects(:upload)
+      .expects(:run)
       .returns(successful_result)
       .times(2)
 
@@ -71,7 +68,7 @@ class BugsnagSourcemapUploaderTest < Minitest::Test
 
     BugsnagSourcemapUploader::UploadTask
       .any_instance
-      .expects(:upload)
+      .expects(:run)
       .returns(failed_result)
       .times(2)
 
@@ -91,7 +88,7 @@ class BugsnagSourcemapUploaderTest < Minitest::Test
 
     BugsnagSourcemapUploader::UploadTask
       .any_instance
-      .expects(:upload)
+      .expects(:run)
       .returns(failed_result)
       .times(2)
 

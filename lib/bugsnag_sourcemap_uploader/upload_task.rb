@@ -13,7 +13,7 @@ module BugsnagSourcemapUploader
       @bugsnag_api_key = bugsnag_api_key
     end
 
-    def upload(http_options: {})
+    def run(http_options: {})
       body_payload = {
         'apiKey' => @bugsnag_api_key,
         'minifiedUrl' => @asset_metadata.cdn_url,
@@ -25,11 +25,11 @@ module BugsnagSourcemapUploader
       payload = http_options.merge(body: body_payload)
 
       Result.new(
-        asset_metadata,
-        HttpParty.post(UPLOAD_URL, payload)
+        @asset_metadata,
+        HTTParty.post(UPLOAD_URL, payload)
       )
     rescue StandardError => e
-      ExecutionErrorResult.new(asset_metadata, e)
+      ExecutionErrorResult.new(@asset_metadata, e)
     end
 
     private
@@ -88,6 +88,10 @@ module BugsnagSourcemapUploader
       def initialize(asset_metadata, exception)
         @asset_metadata = asset_metadata
         @exception = exception
+      end
+
+      def status_code
+        nil
       end
 
       def reason
