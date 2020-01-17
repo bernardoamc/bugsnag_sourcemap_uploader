@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     bugsnag_sourcemap_uploader (0.1.0)
-      concurrent-ruby
-      httparty
+      concurrent-ruby (~> 1.1.4)
+      httparty (~> 0.17.0)
 
 GEM
   remote: https://rubygems.org/

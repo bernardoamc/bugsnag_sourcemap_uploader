@@ -40,6 +40,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'rake', '~> 10.0'
 
-  spec.add_dependency 'concurrent-ruby'
-  spec.add_dependency 'httparty'
+  spec.add_dependency 'concurrent-ruby', '~> 1.1.4'
+  spec.add_dependency 'httparty', '~> 0.17.0'
 end
