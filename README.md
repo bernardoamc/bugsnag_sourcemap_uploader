@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/bugsnag_sourcemap_uploader.svg)](https://badge.fury.io/rb/bugsnag_sourcemap_uploader) [![](https://github.com/bernardoamc/bugsnag_sourcemap_uploader/workflows/continuous-integration/badge.svg)](https://github.com/bernardoamc/bugsnag_sourcemap_uploader/actions?query=workflow%3Acontinuous-integration)
+
 # BugsnagSourcemapUploader
 
 Upload your sourcemaps to Bugsnag in parallel.
