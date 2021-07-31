@@ -23,7 +23,7 @@ module BugsnagSourcemapUploader
   # @return [BugsnagSourcemapUploader::Result] The object with the results of our operation.
   def self.upload(assets_metadata:, bugsnag_api_key:, http_options: {})
     pool = Concurrent::ThreadPoolExecutor.new(
-      min_threads: 4,
+      min_threads: [Concurrent.processor_count, 4].min,
       max_threads: Concurrent.processor_count
     )
 

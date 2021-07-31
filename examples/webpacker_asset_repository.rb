@@ -36,26 +36,22 @@ module BugsnagSourcemapUploader
     end
 
     def scripts_by_prefix
-      @scripts_by_prefix ||= begin
-        scripts.each_with_object({}) do |script, prefixes|
-          match_data = script.match(/\A(.*)-[a-f0-9]{64}\.js\z/)
-          next if match_data.nil?
+      @scripts_by_prefix ||= scripts.each_with_object({}) do |script, prefixes|
+        match_data = script.match(/\A(.*)-[a-f0-9]{64}\.js\z/)
+        next if match_data.nil?
 
-          prefix = match_data[1]
-          prefixes[prefix] = script
-        end
+        prefix = match_data[1]
+        prefixes[prefix] = script
       end
     end
 
     def source_maps_by_prefix
-      @source_maps_by_prefix ||= begin
-        source_maps.each_with_object({}) do |source_map, prefixes|
-          match_data = source_map.match(/\A(.*)-[a-f0-9]{64}\.js\.map\z/)
-          next if match_data.nil?
+      @source_maps_by_prefix ||= source_maps.each_with_object({}) do |source_map, prefixes|
+        match_data = source_map.match(/\A(.*)-[a-f0-9]{64}\.js\.map\z/)
+        next if match_data.nil?
 
-          prefix = match_data[1]
-          prefixes[prefix] = source_map
-        end
+        prefix = match_data[1]
+        prefixes[prefix] = source_map
       end
     end
 
@@ -76,13 +72,11 @@ module BugsnagSourcemapUploader
       end
 
       def cdn_url
-        @cdn_url ||= begin
-          Addressable::URI
-            .parse(CDN_HOST_URL)
-            .join("#{parent_dir}/")
-            .join(script_name)
-            .to_s
-        end
+        @cdn_url ||= Addressable::URI
+                     .parse(CDN_HOST_URL)
+                     .join("#{parent_dir}/")
+                     .join(script_name)
+                     .to_s
       end
 
       private
